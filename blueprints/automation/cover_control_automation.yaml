@@ -2817,7 +2817,7 @@ action:
               ###################################
               - alias: "Start Shading"
                 conditions:
-                  - "{{ current_position | int(default=101) > shading_position }}"
+                  - "{{ current_position | int(default=101) >= shading_position }}"
                   - or: # Here the shading is executed during the day and therefore the time comparison must be made here.
                       - and:
                           - "{{ is_time_control_disabled }}"
@@ -2958,7 +2958,7 @@ action:
                   - "{{ is_state(contact_sensor, ['true', 'on']) }}"
                   - "{{ ventilation_after_shading_end }}"
                   - or:
-                      - "{{ (current_position | int(default=101) < ventilate_position) }}"
+                      - "{{ (current_position | int(default=101) <= ventilate_position) }}"
                       - "{{ ventilation_if_lower_enabled and (current_position | int(default=101) >= ventilate_position) }}"
                   - or: # The cover is not allowed to be lowered when the lockout protection is enabled
                       - "{{ not is_lockout_protection_enabled }}"
@@ -3132,7 +3132,7 @@ action:
               - "{{ auto_up_force == [] or auto_up_force != [] and is_state(auto_up_force, ['false', 'off']) }}"
               - "{{ auto_shading_start_force == [] or auto_shading_start_force != [] and is_state(auto_shading_start_force, ['false', 'off']) }}"
           - or:
-              - "{{ (current_position | int(default=101) < ventilate_position) }}"
+              - "{{ (current_position | int(default=101) <= ventilate_position) }}"
               - "{{ ventilation_if_lower_enabled and (current_position | int(default=101) >= ventilate_position) }}"
           - or:
               - or: # Source: Close
@@ -3785,7 +3785,7 @@ action:
                   - "{{ is_up_enabled }}"
                   - or:
                       - "{{ in_open_position }}"
-                      - "{{ (current_position | int(default=101) > ventilate_position) }}"
+                      - "{{ (current_position | int(default=101) >= ventilate_position) }}"
                       - "{{ (current_position | int(default=101) >= open_position) }}"
                       - "{{ (current_position | int(default=101) == 100) }}"
                 sequence:
